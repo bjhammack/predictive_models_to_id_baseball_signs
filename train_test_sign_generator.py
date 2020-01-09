@@ -27,12 +27,13 @@ class Sign_Maker(object):
 		if auto = False, let's user name signs and define the rules for said signs. If false, signs are auto-generated.
 		Default: auto = True
 		'''
-		n_signs_input = input('How many signs would you like to define?(Max: 10) ')
-		n_signs = int(n_signs_input)
-
+		n_signs = 10
 		signs = {}
 		
 		if self.auto == False:
+			n_signs_input = input('How many signs would you like to define?')
+			n_signs = int(n_signs_input)
+
 			for i in range(0,n_signs):
 				sign_name = input('Enter the name of your sign: ')
 				sign_rule = input('''Enter the rules of your signs. Separate sign actions by spaces.
