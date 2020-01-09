@@ -5,7 +5,7 @@ import re
 import time
 ran.seed(time.time())
 
-class sign_maker(object):
+class Sign_Maker(object):
 
 	def __init__(self, auto=True):
 		if auto == True or auto == False:
@@ -72,7 +72,7 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 						sign.append(sign_action)
 
 				str_sign = ' '.join(sign)
-				if re.search('[a-zA-Z]', str_sign) == False:
+				if re.search('[a-zA-Z]', str_sign) == None:
 					str_sign += ' '+self._create_random_signs(False)
 				signs[sign_name] = str_sign
 		
@@ -83,15 +83,34 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 		Takes list of signs and creates training data of both signs and no signs.
 		'''
 		train_set = []
-		test_set = []
+		label_set = []
 		for i in range(0,n_rows):
 			train_set.append([i,self._create_random_signs(True, ran.randint(1,10))])
-			test_set.append([i,'test'])
+			label_set.append([i,'none'])
+
+		for i in range(0, int(n_rows * .5)):
+			name, sign = ran.choice(list(self.signs.items()))
 
 
-	def _update_special_characters(self, training_set):
-		training_set['sign'] = training_set['sign'].str.replace('\*',self._create_random_signs(False))
-		training_set['sign'] = training_set['sign'].str.replace('\#+',self._create_random_signs(True, ran.randint(1,5)))
+			train_set[i] = [i, self._update_special_characters(sign)]
+			label_set[i] = [i, name]
+
+		np_train_set = np.array(train_set)
+		np_label_set = np.array(label_set)
+
+		np.random.shuffle(np_train_set)
+		np.random.shuffle(np_label_set)
+
+		return np_train_set, np_label_set
+
+	def _update_special_characters(self, sign):
+		'''
+		Function that employs simple regex's to replace the special sign characters with random signs.
+		'''
+		new_sign = re.sub(r'\*', self._create_random_signs(False), sign)
+		new_sign2 = re.sub(r'\#+', self._create_random_signs(True, ran.randint(1,5)), new_sign)
+
+		return new_sign2
 
 	def _create_random_signs(self, is_multiple=False, multiple_range=None):
 		'''
@@ -99,11 +118,12 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 		'''
 		if is_multiple == False:
 			random_sign = ''.join([ran.choice(self.sign_prefix1),ran.choice(self.sign_prefix2),ran.choice(self.sign_mid),ran.choice(self.sign_suffix)])
+			return random_sign
 		else:
 			random_sign = []
 			for i in range(0,multiple_range):
 				sign = ''.join([ran.choice(self.sign_prefix1),ran.choice(self.sign_prefix2),ran.choice(self.sign_mid),ran.choice(self.sign_suffix)])
 				random_sign.append(sign)
-			' '.join(random_sign)
-		
-		return random_sign
+			random_signs = ' '.join(random_sign)
+			
+			return random_signs
