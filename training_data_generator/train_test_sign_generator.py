@@ -79,30 +79,30 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 		
 		return signs
 
-	def create_train_data(self, n_rows=10000):
+	def create_train_data(self, n_rows=100000):
 		'''
 		Takes list of signs and creates training data of both signs and no signs.
 		'''
 		train_set = []
-		label_set = []
+		#label_set = []
 		for i in range(0,n_rows):
-			train_set.append([i,self._create_random_signs(True, ran.randint(1,10))])
-			label_set.append([i,'none'])
+			train_set.append([i, self._create_random_signs(True, ran.randint(1,10)), 'none'])
+			#label_set.append([i,'none'])
 
-		for i in range(0, int(n_rows * .5)):
+		for i in range(0, int(n_rows * .8)):
 			name, sign = ran.choice(list(self.signs.items()))
 
 
-			train_set[i] = [i, self._update_special_characters(sign)]
-			label_set[i] = [i, name]
+			train_set[i] = [i, self._update_special_characters(sign), name]
+			#label_set[i] = [i, name]
 
 		np_train_set = np.array(train_set)
-		np_label_set = np.array(label_set)
+		#np_label_set = np.array(label_set)
 
 		np.random.shuffle(np_train_set)
-		np.random.shuffle(np_label_set)
+		#np.random.shuffle(np_label_set)
 
-		return np_train_set, np_label_set
+		return np_train_set
 
 	def _update_special_characters(self, sign):
 		'''
