@@ -1,6 +1,8 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn import preprocessing
 from keras.models import Sequential
 from keras.layers import Dense
@@ -14,12 +16,16 @@ class Model(object):
 		train_data = np.array([i[1] for i in data])
 		train_labels = np.array([i[2] for i in data])
 
-		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(train_data, train_labels, test_size=0.2, random_state=50)
+		#mlb = MultiLabelBinarizer()
+		#y = mlb.fit_transform(train_labels)
+		y = pd.get_dummies(train_labels).values
+
+		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(train_data, y, test_size=0.2, random_state=50)
 		
 		print('Train Data Shape:',self.X_train.shape)
 		print('Train Labels Shape:',self.y_train.shape)
 
-	def init_network(self, output=10, hidden_layers=3, activations=['sigmoid','relu','relu'], w_reg=[0.1,0.1,0.01]):
+	def init_network(self, output=11, hidden_layers=3, activations=['sigmoid','relu','relu'], w_reg=[0.1,0.1,0.01]):
 		self.model = Sequential()
 		self.model.add(Dense(output*(hidden_layers+1), input_shape=[1], activation='sigmoid', W_regularizer=l2(0.1)))
 
@@ -30,6 +36,8 @@ class Model(object):
 			output_multiplier -= 1
 
 		self.model.add(Dense(output, activation='sigmoid', W_regularizer=l2(0.01)))
+
+		sgd = SGD(lr=0.1)
 		self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy'])
 
 		print(self.model.summary())
