@@ -18,8 +18,11 @@ class Analytics(object):
 		print('Data shape:',self.training_data.shape)
 		print('Data labels shape:',self.training_labels.shape)
 
-		print('\nMax data value:',max([i[1] for i in self.training_data]))
-		print('Min data value:',min([i[1] for i in self.training_data]))
+		sign_count = [len(i.[1].split(' ')) for i in self.training_data]
+		print('\nMax number of signs in set:',max(sign_count))
+		print('Min number of signs in set:',min(sign_count))
+		print('Avg sign set length:',np.mean(sign_count))
+		print('Standard deviation:',round(np.std(sign_count)))
 
 		print('\nUnique labels:',set([i[1] for i in self.training_labels]))
 		print('Label counts:', Counter([i[1] for i in self.training_labels]))
