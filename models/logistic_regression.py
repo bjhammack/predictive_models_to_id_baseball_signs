@@ -46,26 +46,10 @@ class Model(object):
 		train_data = np.array([i[1] for i in data])
 		train_labels = np.array([i[2] for i in data])
 
-		'''
-		# make all signs equal length
-		max_sign_set = max([len(i.split(' ')) for i in train_data_list])
-		index = 0
-		for i in train_data_list:
-			length = len(i.split(' '))
-			while length < max_sign_set:
-				train_data_list[index] += ' 0'
-				length += 1
-			index += 1
-		#train_data = np.array([i.split(' ') for i in train_data_list])
-		'''
-
 		vectorizer = CountVectorizer()
 		vectorizer.fit(train_data)
 		X = vectorizer.transform(train_data)
 
-		#mlb = MultiLabelBinarizer()
-		#y = mlb.fit_transform(train_labels)
-		#y = pd.get_dummies(train_labels).values
 		y = train_labels
 
 		return X, y
