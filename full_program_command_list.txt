@@ -21,6 +21,6 @@ lr_model.plot_confusion_matrix(score, predictions)
 # neural network model
 nn_model = nn.Model(train_data)
 nn_model.init_network()
-nn_model.fit_data()
+history = nn_model.fit_data()
 nn_model.plot_loss(history)
 nn_model.plot_accuracy(history)

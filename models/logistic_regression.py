@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder
 from sklearn import preprocessing
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -41,6 +41,12 @@ class Model(object):
 		all_sample_title = 'Accuracy Score: {0}'.format(score)
 		plt.title(all_sample_title, size = 15);
 		plt.show()
+
+	def predict(self, data):
+		X, y = self._transform_data(data)
+		
+		predictions = self.lr.predict(X)
+		score = self.lr.score(X, y)
 		
 	def _transform_data(self, data):
 		train_data = np.array([i[1] for i in data])

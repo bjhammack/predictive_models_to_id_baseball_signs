@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder
 from sklearn import preprocessing
 from sklearn.feature_extraction.text import CountVectorizer
 from keras.models import Sequential
@@ -27,16 +27,16 @@ class Model(object):
 		# input layer
 		self.model.add(Dense(output*4, input_shape=[self.X_train.shape[1]], activation='relu', W_regularizer=l2(0.1)))
 		# hidden layers
-		self.model.add(Dense(output*4, activation='relu', W_regularizer=l2(0.1)))
+		self.model.add(Dense(output*4, activation='relu', W_regularizer=l1(0.1)))
 		self.model.add(Dropout(0.3))
-		self.model.add(Dense(output*3, activation='relu', W_regularizer=l2(0.01)))
+		self.model.add(Dense(output*3, activation='relu', W_regularizer=l1(0.01)))
 		self.model.add(Dense(output*2, activation='relu', W_regularizer=l2(0.01)))
 		self.model.add(Dropout(0.2))
 		# output layer
 		self.model.add(Dense(output, activation='sigmoid', W_regularizer=l2(0.01)))
 
 		sgd = SGD(lr=0.1)
-		self.model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy'])
+		self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
 		print(self.model.summary())
 
@@ -70,7 +70,7 @@ class Model(object):
 		plt.show()
 
 	def _transform_data(self, data):
-		train_data_list = np.array([i[1] for i in data])
+		train_data = np.array([i[1] for i in data])
 		train_labels = np.array([i[2] for i in data])
 
 		# make all signs equal length
@@ -90,8 +90,12 @@ class Model(object):
 		X = vectorizer.transform(train_data)
 
 		#mlb = MultiLabelBinarizer()
+
 		#y = mlb.fit_transform(train_labels)
 		#y = pd.get_dummies(train_labels).values
-		y = train_labels
-		
+		#y = train_labels
+		encoder = OneHotEncoder()
+		encoder.fit(train_labels.reshape(-1,1))
+		y = encoder.transform(train_labels.reshape(-1,1))
+
 		return X, y
