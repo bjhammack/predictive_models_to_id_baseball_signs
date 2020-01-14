@@ -1,0 +1,26 @@
+#imports
+from training_data_generator import train_test_sign_generator as ttsg
+from analytics import data_analysis as da
+from models import neural_network as nn
+from models import logistic_regression as logreg
+
+# create training data
+sm = ttsg.Sign_Maker()
+train_data = sm.create_train_data()
+
+# data analysis
+analysis = da.Analytics(train_data)
+analysis.data_overview()
+
+# logistic regression model
+lr_model = logreg.Model(train_data)
+lr_model.init_lr()
+score, predictions = lr_model.fit_data()
+lr_model.plot_confusion_matrix(score, predictions)
+
+# neural network model
+nn_model = nn.Model(train_data)
+nn_model.init_network()
+nn_model.fit_data()
+nn_model.plot_loss(history)
+nn_model.plot_accuracy(history)
