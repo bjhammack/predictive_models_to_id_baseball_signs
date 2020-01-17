@@ -22,9 +22,15 @@ Prior to any of the models being run, the data is vectorized (the strings are co
 ## Neural Network
 The first model designed for this project is a neural network. It can be instantiated with `nn_model = neural_network.Model(train_data)`.
 
-The neural network model utilizes only the input and output layers. Extensive testing determined that hidden layers only proved detrimental to the prediction process, with the amount of accuracy lost ranging from -0.15 to -0.7. With its current setup, the neural network consistently performs at and above 0.96 accuracy, with a mean squared error in the realm of <>.
+When first testing the neural network, it seemed that hidden layers were only causing accuracy to wane, going from .85 accuracy without hidden layers to .2 with them. After extensive testing, it was uncovered that the hidden layers were not the problem, it was the output sizes of the input and hidden layers. The output sizes were far too small to handle an input shape of roughly 400. Once output sizes were increased, the model improved drastically, lowering its loss to .48 and increasing its accuracy by .13.
 
-Due to the lack of features and complexity, a neural network is one of the less optimal models to use for this project. As you will see, other models easily match and outpace the neural network, while running much more quickly. A version of this project that may be more conducive to neural networks would use video of a third-base coach giving signs, rather than just a string of coded signs.
+To further improve the model, the output layer's activation function was changed from 'sigmoid' to a 'softmax' activation function. This helped the model improve even more, albeit not as impressively as when output sizes were increased. Below are before and after photos when the model ran without hidden layers and 'sigmoid' activation vs. with hidden layers and 'softmax'.
+![before loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_loss.png?raw=true "Before Loss")
+![before accuracy](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_acc.png?raw=true "Before Accuracy")
+![after loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_post_sm_loss.png?raw=true "After Loss")
+![after accuracy](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_post_sm_acc.png?raw=true "After Accuracy")
+
+Due to the lack of features and complexity, a neural network is one of the less optimal models to use for this project; though we can improve its runtime by adjusting epochs and batch sizes based on the results we are getting. As you will see, other models easily match and outpace the neural network, while running much more quickly. A version of this project that may be more conducive to neural networks would use video of a third-base coach giving signs, rather than just a string of coded signs.
 
 ## Logistic Regression
 The second model designed to predict the signs being given is logistic regression. The version of logistic regression being used is the sklearn standard LogisticRegression class.
@@ -32,4 +38,12 @@ The second model designed to predict the signs being given is logistic regressio
 Logistic regression performed exceptionally well on this problem, providing no lower than 0.98 and sometimes north of 0.99 accuracy on our test sets. This is of no huge surprise, as this problem is extremely well-suited for logisitic regression.
 
 As examination of the confusion matrix -- which can be called with `lr_model.plot_confusion_matrix(score, predictions)` -- shows us that the majority of incorrect predictions revolve around the 'none' labeled signs, meaning that the model is seeing false positives, when there are no real signs. This could mean one of two thing: either actual signs were inserted into these assumed 'none' columns -- this is possibility because the function for creating these pseudo-signs does not have a robust check for this scenario yet -- or the model doesn't identify the full sequence of real signs, only parts of them. This would ensure that the true signs are almost always identified, but opens the door for false positives like we are seeing.
-![confusion matrix](https://github.com/bjhammack/nn_baseball_sign_predictor/blob/master/images/lr_confusion_matrix.png?raw=true)
+![confusion matrix](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/lr_confusion_matrix.png?raw=true)
+
+## Random Forest
+The random forest model, whose data transformation methodology closely resembles that of the log reg model, performed just as exceptionally.
+
+Just like the logistic regression model, the random forest never rated below .98 accuracy, while consistently hitting .99 too. To reiterate the previous section, this sort of problem is especially suited for logisitic regression and random forest models, so combining the high quality of the data with that fact and you're bound to achieve impressive results.
+
+One potentially interesting aspect of the random forest model is the confusion matrix. Just like logistic regression, most false positives involved the 'none' label, but unlike log reg it seemed specific labels had a noticeably higher rate of false positive than others. It may just be a coincidence that the test runs produced these results consistently, but further digging may reveal that the random forest structure interprets the data in the such a way that makes certain types of signs less consistent.
+![confusion matrix](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/rf_confusion_matrix.png?raw=true)

@@ -25,18 +25,21 @@ class Model(object):
 		self.model = Sequential()
 
 		# input layer
-		self.model.add(Dense(output*4, input_shape=[self.X_train.shape[1]], activation='relu', W_regularizer=l2(0.1)))
-		# model performs best without hidden layers
+		self.model.add(Dense(output*16, input_shape=[self.X_train.shape[1]], activation='relu', W_regularizer=l2(0.1)))
+		# hidden layers
+		self.model.add(Dense(output*12, activation='relu', W_regularizer=l2(0.01)))
+		self.model.add(Dense(output*8, activation='relu', W_regularizer=l2(0.001)))
+		#self.model.add(Dense(output*4, activation='relu', W_regularizer=l2(0.001)))
 		# output layer
-		self.model.add(Dense(output, activation='sigmoid', W_regularizer=l2(0.01)))
+		self.model.add(Dense(output, activation='softmax', W_regularizer=l2(0.001)))
 
 		sgd = SGD(lr=0.1)
 		self.model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 
 		print(self.model.summary())
 
-	def fit_data(self, batch=256, epochs=100, verbose=2):
-		history = self.model.fit(self.X_train, self.y_train, batch_size=batch, epochs=epochs, verbose=verbose, validation_data=(self.X_test, self.y_test), validation_freq=10)
+	def fit_data(self, batch=405, epochs=50, verbose=2):
+		history = self.model.fit(self.X_train, self.y_train, batch_size=batch, epochs=epochs, verbose=verbose, validation_data=(self.X_test, self.y_test))
 
 		return history
 
@@ -44,7 +47,7 @@ class Model(object):
 		# Summary of loss history
 		plt.plot(history.history['loss'])
 		plt.plot(history.history['val_loss'], 'g--')
-		plt.title('Logistic Regression Model Loss')
+		plt.title('Model Loss Over Epochs')
 		plt.ylabel('Categorical Crossentropy')
 		plt.xlabel('Epoch')
 		plt.legend(['Training Loss', 'Testing Loss'], loc='upper right')
@@ -57,7 +60,7 @@ class Model(object):
 		# Summary of accuracy history
 		plt.plot(history.history['accuracy'])
 		plt.plot(history.history['val_accuracy'], 'g--')
-		plt.title('Logistic Regression Model Accuracy')
+		plt.title('Model Accuracy Over Epochs')
 		plt.ylabel('Model Accuracy')
 		plt.xlabel('Epoch')
 		plt.legend(['Training Accuracy', 'Testing Accuracy'], loc='lower left')
