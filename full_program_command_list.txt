@@ -1,26 +1,36 @@
-#imports
+'''
+This file will show all available commands in the program, what they do, and what you need to do to properly run the entire thing.
+
+Assuming you have all prerequisites, copy/pasting this code into your python console should run the program in its entirety.
+'''
+
+# imports. Needs to be run prior anything else
 from training_data_generator import train_test_sign_generator as ttsg
 from analytics import data_analysis as da
 from models import neural_network as nn
 from models import logistic_regression as logreg
+from models import random_forest as rf
 
 # create training data
-sm = ttsg.Sign_Maker()
-train_data = sm.create_train_data()
+sm = ttsg.Sign_Maker() # initialized object for creating training data
+train_data = sm.create_train_data() # creates numpy array of n number of signs. Takes optional argument for how many rows you want (default: 100,000).
 
-# data analysis
-analysis = da.Analytics(train_data)
-analysis.data_overview()
+# data analysis prior to modeling
+analysis = da.Analytics(train_data) # initialize object that holds all analytical functions
+analysis.data_overview() # provides overview of your training data (longest signs series, mean length, std, counter per label, etc.)
 
 # logistic regression model
-lr_model = logreg.Model(train_data)
-lr_model.init_lr()
-score, predictions = lr_model.fit_data()
-lr_model.plot_confusion_matrix(score, predictions)
+lr_model = logreg.Model(train_data) # initializes object to run logistic regression
+lr_model.init_lr() # sets initial params of model, plus splits data into train/test
+score, predictions = lr_model.fit_data() # fits data to model and tests against test data. Returns score of test data and raw predictions for test data.
+lr_model.plot_confusion_matrix(score, predictions) # generates confusion matrix from the test data
 
 # neural network model
-nn_model = nn.Model(train_data)
-nn_model.init_network()
-history = nn_model.fit_data()
-nn_model.plot_loss(history)
-nn_model.plot_accuracy(history)
+nn_model = nn.Model(train_data) # inits object to run neural network
+nn_model.init_network() # sets initial params of network, including layers, and train/test splits data
+history = nn_model.fit_data() # fits data to model and tests against test data. Returns model to use for prediction
+nn_model.plot_loss(history) # plots graph of loss over each epoch
+nn_model.plot_accuracy(history) # plots graph of accuracy over epochs
+
+# random forest model
+rf_model = rf.Model(train_data) # inits object to run random forest
