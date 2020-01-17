@@ -27,12 +27,19 @@ When first testing the neural network, it seemed that hidden layers were only ca
 To further improve the model, the output layer's activation function was changed from 'sigmoid' to a 'softmax' activation function. This helped the model improve even more, albeit not as impressively as when output sizes were increased. Below are before and after photos when the model ran without hidden layers and 'sigmoid' activation vs. with hidden layers and 'softmax'.
 
 Pre-Changes Loss:
+
 ![before loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_loss.png?raw=true "Before Loss")
+
 Pre-Changes Acc:
+
 ![before accuracy](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_acc.png?raw=true "Before Accuracy")
+
 Post-Changes Loss:
+
 ![after loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_post_sm_loss.png?raw=true "After Loss")
+
 Post-Changes Acc:
+
 ![after accuracy](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_post_sm_acc.png?raw=true "After Accuracy")
 
 Due to the lack of features and complexity, a neural network is one of the less optimal models to use for this project; though we can improve its runtime by adjusting epochs and batch sizes based on the results we are getting. As you will see, other models easily match and outpace the neural network, while running much more quickly. A version of this project that may be more conducive to neural networks would use video of a third-base coach giving signs, rather than just a string of coded signs.
