@@ -26,12 +26,7 @@ class Model(object):
 
 		# input layer
 		self.model.add(Dense(output*4, input_shape=[self.X_train.shape[1]], activation='relu', W_regularizer=l2(0.1)))
-		# hidden layers
-		self.model.add(Dense(output*4, activation='relu', W_regularizer=l1(0.1)))
-		self.model.add(Dropout(0.3))
-		self.model.add(Dense(output*3, activation='relu', W_regularizer=l1(0.01)))
-		self.model.add(Dense(output*2, activation='relu', W_regularizer=l2(0.01)))
-		self.model.add(Dropout(0.2))
+		# model performs best without hidden layers
 		# output layer
 		self.model.add(Dense(output, activation='sigmoid', W_regularizer=l2(0.01)))
 
@@ -40,7 +35,7 @@ class Model(object):
 
 		print(self.model.summary())
 
-	def fit_data(self, batch=256, epochs=100, verbose=1):
+	def fit_data(self, batch=256, epochs=100, verbose=2):
 		history = self.model.fit(self.X_train, self.y_train, batch_size=batch, epochs=epochs, verbose=verbose, validation_data=(self.X_test, self.y_test), validation_freq=10)
 
 		return history
@@ -50,10 +45,10 @@ class Model(object):
 		plt.plot(history.history['loss'])
 		plt.plot(history.history['val_loss'], 'g--')
 		plt.title('Logistic Regression Model Loss')
-		plt.ylabel('Mean Squared Error')
+		plt.ylabel('Categorical Crossentropy')
 		plt.xlabel('Epoch')
 		plt.legend(['Training Loss', 'Testing Loss'], loc='upper right')
-		print ("MSE after final iteration: ", history.history['val_loss'][-1])
+		print ("CC after final iteration: ", history.history['val_loss'][-1])
 		plt.show()
 
 	def plot_accuracy(self, history):
@@ -73,27 +68,10 @@ class Model(object):
 		train_data = np.array([i[1] for i in data])
 		train_labels = np.array([i[2] for i in data])
 
-		# make all signs equal length
-		'''
-		max_sign_set = max([len(i.split(' ')) for i in train_data_list])
-		index = 0
-		for i in train_data_list:
-			length = len(i.split(' '))
-			while length < max_sign_set:
-				train_data_list[index] += ' 0'
-				length += 1
-			index += 1
-		train_data = np.array([i.split(' ') for i in train_data_list])
-		'''
 		vectorizer = CountVectorizer()
 		vectorizer.fit(train_data)
 		X = vectorizer.transform(train_data)
 
-		#mlb = MultiLabelBinarizer()
-
-		#y = mlb.fit_transform(train_labels)
-		#y = pd.get_dummies(train_labels).values
-		#y = train_labels
 		encoder = OneHotEncoder()
 		encoder.fit(train_labels.reshape(-1,1))
 		y = encoder.transform(train_labels.reshape(-1,1))
