@@ -18,14 +18,14 @@ Prior to any of the models being run, the data is vectorized (the strings are co
 
 # Available Models
 ## Neural Network
-The first model designed for this project was a neural network. It can be instantiated with `nn_model = neural_network.Model(train_data)`.
+The first model designed for this project is a neural network. It can be instantiated with `nn_model = neural_network.Model(train_data)`.
 
 The neural network model utilizes only the input and output layers. Extensive testing determined that hidden layers only proved detrimental to the prediction process, with the amount of accuracy lost ranging from -0.15 to -0.7. With its current setup, the neural network consistently performs at and above 0.96 accuracy, with a mean squared error in the realm of <>.
 
 Due to the lack of features and complexity, a neural network is one of the less optimal models to use for this project. As you will see, other models easily match and outpace the neural network, while running much more quickly. A version of this project that may be more conducive to neural networks would use video of a third-base coach giving signs, rather than just a string of coded signs.
 
 ## Logistic Regression
-The second model designed to predict the signs being given was logistic regression. This model was sklearn standard LogisticRegression model.
+The second model designed to predict the signs being given is logistic regression. The version of logistic regression being used is the sklearn standard LogisticRegression class.
 
 Logistic regression performed exceptionally well on this problem, providing no lower than 0.98 and sometimes north of 0.99 accuracy on our test sets. This is of no huge surprise, as this problem is extremely well-suited for logisitic regression.
 
