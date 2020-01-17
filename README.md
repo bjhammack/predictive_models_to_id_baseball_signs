@@ -25,6 +25,7 @@ The first model designed for this project is a neural network. It can be instant
 When first testing the neural network, it seemed that hidden layers were only causing accuracy to wane, going from .85 accuracy without hidden layers to .2 with them. After extensive testing, it was uncovered that the hidden layers were not the problem, it was the output sizes of the input and hidden layers. The output sizes were far too small to handle an input shape of roughly 400. Once output sizes were increased, the model improved drastically, lowering its loss to .48 and increasing its accuracy by .13.
 
 To further improve the model, the output layer's activation function was changed from 'sigmoid' to a 'softmax' activation function. This helped the model improve even more, albeit not as impressively as when output sizes were increased. Below are before and after photos when the model ran without hidden layers and 'sigmoid' activation vs. with hidden layers and 'softmax'.
+
 ![before loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_loss.png?raw=true "Before Loss")
 ![before accuracy](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_acc.png?raw=true "Before Accuracy")
 ![after loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_post_sm_loss.png?raw=true "After Loss")
