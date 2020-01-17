@@ -26,7 +26,7 @@ When first testing the neural network, it seemed that hidden layers were only ca
 
 To further improve the model, the output layer's activation function was changed from 'sigmoid' to a 'softmax' activation function. This helped the model improve even more, albeit not as impressively as when output sizes were increased. Below are before and after photos when the model ran without hidden layers and 'sigmoid' activation vs. with hidden layers and 'softmax'.
 
-Pre-Changes Loss:
+Pre-Changes Loss ('Logistic Regression' was a mistype):
 
 ![before loss](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/nn_pre_sm_loss.png?raw=true "Before Loss")
 
