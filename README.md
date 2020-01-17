@@ -1,4 +1,6 @@
 # Predicting Third-Base Coach Signs with Various Models
+(a full, concise set of directions on how to run this project yourself can be found in full_program_command_list.txt)
+
 Baseball is well-known for the signs and signals exchanged between players and coaches throughout the course of a ballgame. A tap of the nose, a swipe of the arm; these could be precise tactical directions for a player or a red herring designed to throw the opposing team off the scent of genuine signs.
 
 After randomly generating a train/test dataset of genuine and red herring signs, this model will aim to classify them as accurately as possible.
