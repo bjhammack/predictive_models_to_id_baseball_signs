@@ -22,8 +22,8 @@ analysis.data_overview() # provides overview of your training data (longest sign
 # logistic regression model
 lr_model = logreg.Model(train_data) # initializes object to run logistic regression
 lr_model.init_lr() # sets initial params of model, plus splits data into train/test
-score, predictions = lr_model.fit_data() # fits data to model and tests against test data. Returns score of test data and raw predictions for test data.
-lr_model.plot_confusion_matrix(score, predictions) # generates confusion matrix from the test data
+predictions, score = lr_model.fit_data() # fits data to model and tests against test data. Returns score of test data and raw predictions for test data.
+lr_model.plot_confusion_matrix(lr_model.y_test, predictions, score) # generates confusion matrix from the test data
 
 # neural network model
 nn_model = nn.Model(train_data) # inits object to run neural network
@@ -35,5 +35,5 @@ nn_model.plot_accuracy(history) # plots graph of accuracy over epochs
 # random forest model
 rf_model = rf.Model(train_data) # inits object to run random forest
 rf_model.init_rf() # sets initial params of model, plus splits data into train/test
-score, predictions = rf_model.fit_data() # fits data to model and tests against test data. Returns score of test data and raw predictions for test data.
-rf_model.plot_confusion_matrix(score, predictions) # generates confusion matrix from the test data
+predictions, score = rf_model.fit_data() # fits data to model and tests against test data. Returns score of test data and raw predictions for test data.
+rf_model.plot_confusion_matrix(rf_model.y_test, predictions, score) # generates confusion matrix from the test data
