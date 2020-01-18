@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn import metrics
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.regularizers import l2, l1
@@ -46,6 +47,20 @@ class Model(object):
 		history = self.model.fit(self.X_train, self.y_train, batch_size=batch, epochs=epochs, verbose=verbose, validation_data=(self.X_test, self.y_test))
 
 		return history
+
+	def predict(self, data):
+		'''
+		Predicts label of dataset based on previously fitted model. Returns predictions and score.
+		'''
+		X, y = transformations(data=data, vector=True, ohe=True, tts=False)
+		y_to_score = np.argmax(y, axis=1).flatten()
+		
+		predictions = self.model.predict(X)
+		predictions_to_score = np.argmax(predictions, axis=1)
+
+		score = (y_to_score == predictions_to_score).sum() / y_to_score.shape[1]
+
+		return predictions, score
 
 	def plot_loss(self, history):
 		'''

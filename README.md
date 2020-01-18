@@ -18,6 +18,18 @@ You can initialize the sign generating object with `sm = train_test_sign_generat
 
 Prior to any of the models being run, the data is vectorized (the strings are converted into numerical vectors), so that the mathematics underlying the models can properly execute.
 
+# Data Analysis
+To examine the data, prior to modeling and predicting, I have created a class to handle giving insights on the data you are working with. To access this class, you need to call `analysis = data_analysis.Analytics(data)`.
+
+As of right now, this class has three functions that each give a different perspective on the data. The first, `data_overview()`, provides us with the shape of our data, the max and min lengths of each set of signs, the average length of each set of signs, the standard deviation of each set of signs, the unique labels in the dataset, and the counts of each label in the dataset.
+![data_overview](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/data_overview.png?raw=true "Data Overview")
+
+`count_plot()` plots a bar chart whose x-axis is the unique data labels and y-axis is the count of each occurence of that label.
+![count_plot](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/count_plot.png?raw=true "Count Plot")
+
+`scatter_plot()` plots a scatterplot whose x-axis is the number of signs in each individual sign set and whose y-axis is the label each item corresponds to.
+![scatter_plot](https://github.com/bjhammack/predictive_models_to_id_baseball_signs/blob/master/images/scatter_plot.png?raw=true "Scatter Plot")
+
 # Available Models
 ## Neural Network
 The first model designed for this project is a neural network. It can be instantiated with `nn_model = neural_network.Model(train_data)`.

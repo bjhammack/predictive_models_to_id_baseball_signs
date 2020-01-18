@@ -3,6 +3,7 @@ import random as ran
 import numpy as np
 import re
 import time
+import itertools
 ran.seed(time.time())
 
 class Sign_Maker(object):
@@ -72,9 +73,15 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 
 						sign.append(sign_action)
 
+				sign.insert(0,'#')
+				sign.append('#')
+
+				sign = [i for i,j in itertools.groupby(sign)]
+
 				str_sign = ' '.join(sign)
+
 				if re.search('[a-zA-Z]', str_sign) == None:
-					str_sign += ' '+self._create_random_signs(False)
+					str_sign += ' '+self._create_random_signs(False)+' #'
 				signs[sign_name] = str_sign
 		
 		return signs
@@ -84,23 +91,16 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 		Takes list of signs and creates training data of both signs and no signs.
 		'''
 		train_set = []
-		#label_set = []
 		for i in range(0,n_rows):
 			train_set.append([i, self._create_random_signs(True, ran.randint(1,10)), 'none'])
-			#label_set.append([i,'none'])
-
 		for i in range(0, int(n_rows * .8)):
 			name, sign = ran.choice(list(self.signs.items()))
 
-
 			train_set[i] = [i, self._update_special_characters(sign), name]
-			#label_set[i] = [i, name]
 
 		np_train_set = np.array(train_set)
-		#np_label_set = np.array(label_set)
 
 		np.random.shuffle(np_train_set)
-		#np.random.shuffle(np_label_set)
 
 		return np_train_set
 
@@ -109,7 +109,7 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 		Function that employs simple regex's to replace the special sign characters with random signs.
 		'''
 		new_sign = re.sub(r'\*', self._create_random_signs(False), sign)
-		new_sign2 = re.sub(r'\#+', self._create_random_signs(True, ran.randint(1,5)), new_sign)
+		new_sign2 = re.sub(r'\#+', self._create_random_signs(True, ran.randint(1,3)), new_sign)
 
 		return new_sign2
 
@@ -128,3 +128,8 @@ Example: # mmtn * lmva * mmhl # (randoms, tap mid nose, random, v-swipe left arm
 			random_signs = ' '.join(random_sign)
 			
 			return random_signs
+
+	def _dedupe_adjacent(self, sign):
+		for i in xrange(len(sign)-1, 0, -1):
+			if sign[i] == sign[i-1]:
+				del sign[i]
